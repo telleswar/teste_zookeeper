@@ -106,7 +106,7 @@ public class App implements Watcher{
 
     public void readAllFilhos(String prPathPai) throws KeeperException, InterruptedException {
         List<String> mensagensNodes = zooKeeper.getChildren("/"+prPathPai, false);
-        String str = "Dados do nós pai ["+prPathPai+"]";
+        String str = "Nós do nó pai ["+prPathPai+"]";
         for (String node : mensagensNodes) {
            str += "\n  ♦ "+node+" \n      → [Msg] "+readZNode(prPathPai+"/"+node);
         }
