@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 
 import org.apache.zookeeper.*;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
 
 public class App implements Watcher{
@@ -58,7 +54,7 @@ public class App implements Watcher{
 
             }
 
-            //Fecha a conexão com o servidor do
+            //Fecha a conexão com o servidor do Zookeeper
             app.close();
         } catch (Exception e) {
             e.printStackTrace();
