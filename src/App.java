@@ -20,11 +20,11 @@ public class App implements Watcher{
             while(Op != 0){
                 String str = "";
                 str += "Demonstração nós do zookeeper\n";
-                str += "►1 - Criar um nó\n";
-                str += "►2 - Listar nós\n";
-                str += "►3 - Ler um nó\n";
-                str += "►4 - Ler todos os nós\n";
-                str += "►0 - Encerrar\n";
+                str += "♦ 1 → Criar um nó\n";
+                str += "♦ 2 → Listar nós\n";
+                str += "♦ 3 → Ler um nó\n";
+                str += "♦ 4 → Ler todos os nós\n";
+                str += "♦ 0 → Encerrar\n";
                 str += "Digite uma opção: ";
                 Op = Integer.parseInt(JOptionPane.showInputDialog(null, str));
                 switch (Op) {
@@ -65,7 +65,7 @@ public class App implements Watcher{
 
        String str = "ZNodes criados";
         for (String path : this.ZNODE_PATHS) {
-            str += "\n ►"+path;
+            str += "\n → "+path;
         }
 
         return str;
@@ -80,14 +80,12 @@ public class App implements Watcher{
         byte[] bytes = data.getBytes();
         String path = zooKeeper.create("/"+znode_path, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         JOptionPane.showMessageDialog(null,"Znode criado: " + path);
-
     }
 
     public void readZNode(String znode_path) throws KeeperException, InterruptedException {
         byte[] data = zooKeeper.getData("/"+znode_path, this, null);
         String dataStr = new String(data);
-        JOptionPane.showMessageDialog(null, "Dados do znode lido: \n∟[Dado]: " + dataStr);
-        
+        JOptionPane.showMessageDialog(null, "Dados do znode lido: \n[Msg]→ " + dataStr);        
     }
 
     public void readAllZNode() throws KeeperException, InterruptedException {
@@ -95,7 +93,7 @@ public class App implements Watcher{
         for (String PATH : this.ZNODE_PATHS) {
             byte[] data = zooKeeper.getData("/"+PATH, this, null);
             String dataStr = new String(data);
-            str += "\nDados do znode("+PATH+") lido: \n∟[Dado]: " + dataStr;
+            str += "\nDados do znode("+PATH+") lido: \n[Msg]→ " + dataStr;
         }
         JOptionPane.showMessageDialog(null, str);
     }
