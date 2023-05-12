@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.zookeeper.*;
 import javax.swing.JOptionPane;
@@ -23,7 +24,8 @@ public class App implements Watcher{
                 str += "♦ 1 → Criar um nó\n";
                 str += "♦ 2 → Listar nós\n";
                 str += "♦ 3 → Ler um nó\n";
-                str += "♦ 4 → Ler todos os nós\n";
+                str += "♦ 4 → Ler nós filhos\n";
+                str += "♦ 5 → Ler todos os nós\n";
                 str += "♦ 0 → Encerrar\n";
                 str += "Digite uma opção: ";
                 Op = Integer.parseInt(JOptionPane.showInputDialog(null, str));
@@ -43,9 +45,13 @@ public class App implements Watcher{
                     case 3:
                         // Leitura dos dados do znode
                         String znode_path_read = JOptionPane.showInputDialog(null, app.listarZNode() + "\nDigite um path: ");
-                        app.readZNode(znode_path_read);
+                        JOptionPane.showMessageDialog(null, "Dados do znode lido: \n[Msg]→ " + app.readZNode(znode_path_read));
                         break;
                     case 4:
+                        String znode_pai_path = JOptionPane.showInputDialog(null, app.listarZNode() + "\nDigite um path: "); 
+                        app.readAllFilhos(znode_pai_path);
+                        break;
+                    case 5:
                         app.readAllZNode();
                         break;
                     default:
@@ -82,10 +88,10 @@ public class App implements Watcher{
         JOptionPane.showMessageDialog(null,"Znode criado: " + path);
     }
 
-    public void readZNode(String znode_path) throws KeeperException, InterruptedException {
+    public String readZNode(String znode_path) throws KeeperException, InterruptedException {
         byte[] data = zooKeeper.getData("/"+znode_path, this, null);
         String dataStr = new String(data);
-        JOptionPane.showMessageDialog(null, "Dados do znode lido: \n[Msg]→ " + dataStr);        
+        return dataStr;                
     }
 
     public void readAllZNode() throws KeeperException, InterruptedException {
@@ -94,6 +100,15 @@ public class App implements Watcher{
             byte[] data = zooKeeper.getData("/"+PATH, this, null);
             String dataStr = new String(data);
             str += "\nDados do znode("+PATH+") lido: \n[Msg]→ " + dataStr;
+        }
+        JOptionPane.showMessageDialog(null, str);
+    }
+
+    public void readAllFilhos(String prPathPai) throws KeeperException, InterruptedException {
+        List<String> mensagensNodes = zooKeeper.getChildren("/"+prPathPai, false);
+        String str = "Dados do nós pai ["+prPathPai+"]";
+        for (String node : mensagensNodes) {
+           str += "\n  ♦ "+node+" \n      → [Msg] "+readZNode(prPathPai+"/"+node);
         }
         JOptionPane.showMessageDialog(null, str);
     }
